@@ -23,7 +23,23 @@
       overflow-x: hidden;
     }
 
+    #loader-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 4px;
+      background: linear-gradient(135deg, #fff19f, #d7bfff);
+      width: 0;
+      z-index: 9999;
+      animation: loadBar 2s linear forwards;
+    }
+
+    body.loading .cardd {
+      display: none;
+    }
+
     .cardd {
+      position: relative;
       border: 2px solid;
       border-image: linear-gradient(135deg, #d7bfff, #fff19f) 1;
       padding: 2rem;
@@ -35,6 +51,65 @@
       animation: fadeIn 1.5s ease-out;
     }
 
+    .chip {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      background-color: #ffffff;
+      z-index: 10;
+      animation: flicker 1.5s infinite alternate;
+    }
+
+    .chip.top-left-1 {
+      top: 0;
+      left: 0;
+    }
+
+    .chip.top-left-2 {
+      top: 8px;
+      left: 8px;
+    }
+
+    .chip.top-right-1 {
+      top: 0;
+      right: 0;
+    }
+
+    .chip.top-right-2 {
+      top: 8px;
+      right: 8px;
+    }
+
+    .chip.bottom-left-1 {
+      bottom: 0;
+      left: 0;
+    }
+
+    .chip.bottom-left-2 {
+      bottom: 8px;
+      left: 8px;
+    }
+
+    .chip.bottom-right-1 {
+      bottom: 0;
+      right: 0;
+    }
+
+    .chip.bottom-right-2 {
+      bottom: 8px;
+      right: 8px;
+    }
+
+    @keyframes flicker {
+      0% { opacity: 1; }
+      100% { opacity: 0.6; }
+    }
+
+    .profile-pic-container {
+      position: relative;
+      display: inline-block;
+    }
+
     .profile-pic {
       width: 120px;
       height: 120px;
@@ -42,6 +117,23 @@
       border-radius: 0.5rem;
       border: 2px solid #fff19f;
       margin-bottom: 1rem;
+      cursor: pointer;
+    }
+
+    .dialogue-box {
+      position: absolute;
+      top: 0;
+      left: 0;
+      transform: translateY(-110%);
+      background-color: #000000;
+      color: white;
+      border: 2px solid white;
+      font-family: 'CustomFont', sans-serif;
+      font-size: 0.8rem;
+      padding: 4px 8px;
+      white-space: nowrap;
+      z-index: 10;
+      display: none;
     }
 
     h1 {
@@ -91,7 +183,6 @@
       }
     }
 
-    /* Fade-in animation for the card */
     @keyframes fadeIn {
       from {
         opacity: 0;
@@ -103,23 +194,43 @@
       }
     }
 
-    /* Smooth fade for paragraph text */
     @keyframes fadeText {
       to {
         opacity: 1;
       }
     }
+
+    @keyframes loadBar {
+      to {
+        width: 100%;
+      }
+    }
   </style>
 </head>
-<body>
+<body class="loading">
+  <div id="loader-bar"></div>
+
   <div class="cardd text-center">
-    <img src="assets/pfp.jpg" alt="@closuu's pfp" class="profile-pic" />
+    <!-- Chipped Corners -->
+    <div class="chip top-left-1"></div>
+    <div class="chip top-left-2"></div>
+    <div class="chip top-right-1"></div>
+    <div class="chip top-right-2"></div>
+    <div class="chip bottom-left-1"></div>
+    <div class="chip bottom-left-2"></div>
+    <div class="chip bottom-right-1"></div>
+    <div class="chip bottom-right-2"></div>
+
+    <div class="profile-pic-container">
+      <img src="assets/pfp.jpg" alt="@closuu's pfp" class="profile-pic" id="pfp" />
+      <div class="dialogue-box" id="dialogue-box">what the goodness-</div>
+    </div>
     <h1>@closuu</h1>
     <p class="desc">
-      Im @closuu, also known as qobble and blanc.<br />
-      trying to get into game industry while having fun playing (most of the time)<br />
-      you could look up at my profiles below<br />
-      and thanks for checking this page!
+     hi, i’m @closuu… some people also know me as qobble.<br />
+     just trying to get into the game industry while having fun playing games (most of the time, anyway).<br />
+     <br>you can check out my profiles below if you’d like.<br />
+     thanks for stopping by… it really means a lot.
     </p>
     <div class="links">
       <a href="https://steamcommunity.com/id/vnill/" target="_blank">Steam</a>
@@ -131,5 +242,23 @@
   <script
     src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
   ></script>
+  <script>
+    window.addEventListener("DOMContentLoaded", () => {
+      setTimeout(() => {
+        document.body.classList.remove("loading");
+        document.getElementById("loader-bar").style.display = "none";
+      }, 2000);
+
+      const pfp = document.getElementById("pfp");
+      const dialogue = document.getElementById("dialogue-box");
+
+      pfp.addEventListener("click", () => {
+        dialogue.style.display = "block";
+        setTimeout(() => {
+          dialogue.style.display = "none";
+        }, 3000);
+      });
+    });
+  </script>
 </body>
 </html>
